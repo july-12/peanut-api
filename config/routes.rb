@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :users do
+    post :login, on: :collection
+  end
+  
+  resources :courses, path: 'class'
+  resources :posts do
+    resources :comments
+  end
+  
 end
