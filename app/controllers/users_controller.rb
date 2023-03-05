@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   
-  skip_before_action :authenticate_request, only: [:login]
+  skip_before_action :authenticate_request, only: [:login, :login_by_github]
   before_action :set_user, only: %i[ show update destroy ]
 
   # GET /users
@@ -24,6 +24,21 @@ class UsersController < ApplicationController
     else
       render json: @user.errors, status: :unprocessable_entity
     end
+  end
+
+  def login_by_github
+      auth_hash = request.env['omniauth.auth']
+      uid = auth_hash.uid
+      email = auth_hash.info['email']
+      token = auth_hash.credentials['token']
+      user = User.find_or_create_by(email:, uid:)
+      user.password = token
+      if user.save
+        token = jwt_encode(user_id: user.id)
+        render json: { token: token }, status: :ok
+      else
+        render json: { msg: 'unauthorized' }
+      end
   end
 
   def login

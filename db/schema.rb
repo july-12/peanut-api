@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_04_055952) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_05_021855) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,6 +49,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_04_055952) do
     t.string "phone"
     t.string "email"
     t.string "password_digest"
+    t.string "uid"
   end
 
   add_foreign_key "comments", "posts"
