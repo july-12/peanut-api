@@ -2,12 +2,17 @@ class ApplicationController < ActionController::API
     include JsonWebToken
 
     # before_action :authenticate_request, only: [:create, :update, :destroy]
-    before_action :authenticate_request
+    before_action :authenticate_request, only: [:user_info]
 
 
     attr_reader :current_user
 
     def user_info
+        if @current_user.present?
+            render  json: @current_user
+        else
+            render json: nil
+        end
     end
 
     private
@@ -18,6 +23,7 @@ class ApplicationController < ActionController::API
                 decoded = jwt_decode(token)
                 @current_user = User.find(decoded[:user_id])
             else
+                @current_user = nil
                 render json: { error: 'Not Authorized' }, status: 401
             end
         end
