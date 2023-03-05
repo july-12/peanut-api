@@ -83,4 +83,4 @@ production:
   <<: *default
   database: peanut_production
   username: peanut_api
-  password: <%= ENV["PEANUT_API_DATABASE_PASSWORD"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
