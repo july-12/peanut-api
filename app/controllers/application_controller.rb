@@ -1,17 +1,23 @@
 class ApplicationController < ActionController::API
     include JsonWebToken
 
-    # before_action :authenticate_request, only: [:create, :update, :destroy]
-    before_action :authenticate_request, only: [:user_info]
-
+    before_action :authenticate_request, only: [:create, :update, :destroy]
 
     attr_reader :current_user
 
     def user_info
         if @current_user.present?
-            render  json: @current_user
+            render json: @current_user
         else
-            render json: nil
+            header = request.headers['Authorization']
+            if(header.present?)
+                token = header.split(' ').last if header
+                decoded = jwt_decode(token)
+                @current_user = User.find(decoded[:user_id])
+                render json: @current_user
+            else
+                render json: nil
+            end
         end
     end
 

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   get 'auth/github/callback', to: 'users#login_by_github'
   
-  resources :courses, path: 'class'
+  resources :courses, path: 'classes'
   resources :posts do
     resources :comments
   end

@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
 
   # GET /courses
   def index
-    @courses = Course.all
+    @courses = Course.order(created_at: :desc).all
 
     render json: @courses
   end
@@ -16,6 +16,7 @@ class CoursesController < ApplicationController
   # POST /courses
   def create
     @course = Course.new(course_params)
+    @course.creator_id = @current_user.id
 
     if @course.save
       render json: @course, status: :created, location: @course

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   
-  skip_before_action :authenticate_request, only: [:login, :login_by_github]
+  before_action :authenticate_request, only: [:index, :destroy]
   before_action :set_user, only: %i[ show update destroy ]
 
   # GET /users
