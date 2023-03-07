@@ -10,11 +10,11 @@ class ApplicationController < ActionController::API
             render json: @current_user
         else
             header = request.headers['Authorization']
-            if(header.present?)
+            if header.present?
                 token = header.split(' ').last if header
                 decoded = jwt_decode(token)
                 @current_user = User.find(decoded[:user_id])
-                render json: @current_user
+                render json: @current_user, only: [:name, :email, :avatar], method: :name
             else
                 render json: nil
             end
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::API
     private
         def authenticate_request
             header = request.headers['Authorization']
-            if(header.present?)
+            if header.present?
                 token = header.split(' ').last if header
                 decoded = jwt_decode(token)
                 @current_user = User.find(decoded[:user_id])

@@ -30,8 +30,11 @@ class UsersController < ApplicationController
       auth_hash = request.env['omniauth.auth']
       uid = auth_hash.uid
       email = auth_hash.info['email']
+      name = auth_hash.info['name']
+      avatar = auth_hash.info['image']
       token = auth_hash.credentials['token']
-      user = User.find_or_create_by(email:, uid:)
+      user = User.find_or_create_by(email:, name:, uid:)
+      user.avatar = avatar
       user.password = token
       if user.save
         token = jwt_encode(user_id: user.id)
