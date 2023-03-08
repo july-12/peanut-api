@@ -25,6 +25,9 @@ gem 'jwt'
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem "bcrypt", "~> 3.1.7"
 
+# serializers json api [https://github.com/rails-api/active_model_serializers/blob/v0.10.6/docs/general/getting_started.md]
+gem 'active_model_serializers'
+
 gem 'omniauth-github', github: 'omniauth/omniauth-github', branch: 'master'
 gem "omniauth-rails_csrf_protection"
 
