@@ -8,6 +8,10 @@ Rails.application.routes.draw do
   
   resources :courses, path: 'classes'
   resources :posts
-  resources :comments
+  resources :comments, only: [:index, :create]
+
+  resources :tags, only: [:index, :create, :destroy] do
+    post :batch, on: :collection
+  end
   
 end

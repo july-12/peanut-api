@@ -3,9 +3,12 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all
-
-    render json: @posts
+    course = Course.find(params[:course_id])
+    if course.present?
+        render json: course.posts
+    else
+        render json: { msg: 'Not found course by id' }
+    end
   end
 
   # GET /posts/1
