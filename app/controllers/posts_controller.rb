@@ -1,34 +1,43 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show update destroy ]
+  before_action :set_posts, only: %i[ index, weekly ]
 
-  # GET /posts
   def index
-    course = Course.find(params[:course_id])
-    if course.present?
-        render json: course.posts
+    if @course.present?
+        render json: @posts
     else
         render json: { msg: 'Not found course by id' }
     end
   end
 
-  # GET /posts/1
+  def weekly
+    if @course.present?
+        render json: @posts.group_by{ |p| p.created_at.beginning_of_week }
+    else
+        render json: { msg: 'Not found course by id' }
+    end
+
+  end
+
   def show
     render json: @post
   end
 
-  # POST /posts
   def create
-    @post = Post.new(post_params)
-    @post.creator_id = @current_user.id
+    post = Post.new
+    post.title = post_params[:title]
+    post.content = post_params[:content]
+    post.course_id = post_params[:course_id]
+    post.tags = Tag.find(post_params[:tags]) if post_params[:tags].present?
+    post.creator_id = @current_user.id
 
-    if @post.save
-      render json: @post, status: :created, location: @post
+    if post.save
+      render json: post, status: :created
     else
-      render json: @post.errors, status: :unprocessable_entity
+      render json: post.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /posts/1
   def update
     if @post.update(post_params)
       render json: @post
@@ -48,8 +57,14 @@ class PostsController < ApplicationController
       @post = Post.find(params[:id])
     end
 
+    def set_posts
+      @course = Course.find(params[:course_id])
+      tag_ids = params[:tags]
+      @posts = tag_ids.present? ? @course.posts.by_tags(tag_ids) : @course.posts
+    end
+
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :content, :course_id)
+      params.require(:post).permit(:title, :content, :course_id, tags: [])
     end
 end
