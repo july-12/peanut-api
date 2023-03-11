@@ -60,7 +60,7 @@ class PostsController < ApplicationController
     def set_posts
       @course = Course.find(params[:course_id])
       tag_ids = params[:tags]
-      @posts = tag_ids.present? ? @course.posts.by_tags(tag_ids) : @course.posts
+      @posts = tag_ids.present? ? @course.posts.order('created_at DESC').by_tags(tag_ids) : @course.posts.order('created_at DESC')
     end
 
     # Only allow a list of trusted parameters through.
