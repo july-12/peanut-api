@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_10_034509) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_26_044506) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,7 +21,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_10_034509) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "comment_id"
+    t.string "uid"
     t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["uid"], name: "index_comments_on_uid"
   end
 
   create_table "courses", force: :cascade do |t|
@@ -40,7 +42,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_10_034509) do
     t.bigint "course_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uid"
+    t.string "type"
     t.index ["course_id"], name: "index_posts_on_course_id"
+    t.index ["uid"], name: "index_posts_on_uid"
   end
 
   create_table "tag_posts", force: :cascade do |t|
@@ -57,7 +62,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_10_034509) do
     t.bigint "creator_id"
     t.bigint "course_id"
     t.string "color"
+    t.string "uid"
     t.index ["course_id"], name: "index_tags_on_course_id"
+    t.index ["uid"], name: "index_tags_on_uid"
   end
 
   create_table "users", force: :cascade do |t|
