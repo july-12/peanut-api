@@ -18,6 +18,8 @@ services:
     command: "./bin/rails server"
     environment:
       - RAILS_ENV=${RAILS_ENV}
+      - GITHUB_KEY=${GITHUB_KEY}
+      - GITHUB_SECRET=${GITHUB_SECRET}
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
