@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   end
 
   get 'user_info', to: 'application#user_info'
+  # get 'peanut/auth/github/callback', to: 'users#login_by_github'
   get 'auth/github/callback', to: 'users#login_by_github'
   get 'peanut/auth/github/callback', to: 'users#login_by_github'
   
